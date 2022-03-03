@@ -55,7 +55,6 @@ app.post('/add', (req, res) => {
     };
 // correct sintax in postman is (Body-raw-json)
 // {
-//    "id": 4,
 //    "name": "Olivia",
 //    "city": "Jamundi"
 //}
@@ -66,11 +65,25 @@ app.post('/add', (req, res) => {
 });
 
 app.put('/update/:id', (req, res) => {
-    res.send('Update customer');
+    const {id } = req.params;
+    const {name, city} = req.body;
+    const sql = `UPDATE customers SET name = '${name}', city = '${city}'
+    WHERE id =${id}`;
+
+    connection.query(sql, error => {
+        if (error) throw error;
+        res.send('Customer Updated');
+    });
 });
 
 app.delete('/delete/:id', (req, res) => {
-    res.send('Delete Customer');
+    const { id } = req.params;
+    const sql = `DELETE FROM customers WHERE id= ${id}`;
+
+    connection.query(sql, error => {
+        if (error) throw error;
+        res.send('Customer Deleted');
+    });
 })
 
 //check connection
